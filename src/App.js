@@ -1,7 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const withHOC = (Component) => () => {
+  const learn = "Learn React";
+  return <Component text={learn} />
+}
+
+function App({ text }) {
   return (
     <div className="App">
       <header className="App-header">
@@ -15,11 +20,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {text}
         </a>
       </header>
     </div>
   );
 }
 
-export default App;
+export default withHOC(App);
