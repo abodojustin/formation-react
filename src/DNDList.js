@@ -1,9 +1,11 @@
+// eslint-disable-next-line
 import { useEffect, useState, useMemo } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const DNDList = ({ data }) => {
-  const [items, setItems] = useState(data);
-  const grid = 8;
+  //const [items, setItems] = useState(data);
+  const [result, setResult] = useState(null)
+  // const grid = 8;
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -28,22 +30,30 @@ const DNDList = ({ data }) => {
       return;
     }
 
-    const reorderedItems = reorder(
+    /* const reorderedItems = reorder(
       items,
       result.source.index,
       result.destination.index
     );
 
-    setItems(reorderedItems);
-  };
+    setItems(reorderedItems); */
 
-  useEffect(() => setItems(data), [data]);
+    setResult({ source: result.source.index, dest: result.destination.index})
+  };
+const list = useMemo(() => {
+  return reorder(
+    data,
+    result?.source,
+    result?.dest
+  );
+}, [data, result.source, result.dest])
+  //useEffect(() => setItems(data), [data]);
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            {items.map((item, index) => (
+            {list.map((item, index) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(provided, snapshot) => (
                   <div

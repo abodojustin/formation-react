@@ -19,6 +19,7 @@ const list = [
   },
 ];
 
+// eslint-disable-next-line
 function List({ data }) {
   return (
     <ul>
